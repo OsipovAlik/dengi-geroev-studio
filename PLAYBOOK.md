@@ -11,7 +11,7 @@
 ## Ключевые данные
 - Репозиторий: `OsipovAlik/dengi-geroev-studio` (публичный). В корне — вся студия (этот файл, код, `episodes.json`).
   Ветка `main` — рабочая: изменения `episodes.json` и новых `charsN.py` коммить и пушь прямо в `main`.
-- Видео хранятся как файлы GitHub Release: тег `NN` (например `07`), файл `NN_<hero_latin>_short.mp4`.
+- Видео хранятся в репозитории: `videos/NN_<hero>_short.mp4` (создание Release запрещено политикой сессии); публичная ссылка — `https://raw.githubusercontent.com/OsipovAlik/dengi-geroev-studio/main/videos/NN_<hero>_short.mp4`. Делать ровно два ролика в день, не готовить впрок.
   Публичная ссылка: `https://github.com/OsipovAlik/dengi-geroev-studio/releases/download/NN/NN_<hero_latin>_short.mp4`.
 - Metricool brand/blogId: `7557386`, часовой пояс `Asia/Yerevan`. Сети: Instagram `dengi_geroev`, YouTube, TikTok `dengi_geroev`.
 - Компьютер и Google Диск больше не нужны.
