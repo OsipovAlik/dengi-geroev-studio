@@ -1,16 +1,30 @@
 """Synthesize the voiceover sentence by sentence and build timeline.json + vo.wav.
-Usage: python tts.py [--estimate] [voice]"""
-import io, json, re, sys, wave
+Usage: python tts.py [--estimate] [voice]
+voice: denis (default), dmitri, ruslan, irina — Piper (models from huggingface.co, see setup.sh);
+       aleksandr, anna, elena — RHVoice (old voice)."""
+import io, json, os, re, sys, wave
 import numpy as np
 from script import SCRIPT, HEADLINES, LEAD_IN, TAIL, SENT_GAP
 
 SR = 24000
 estimate = "--estimate" in sys.argv
 args = [a for a in sys.argv[1:] if not a.startswith("--")]
-voice = args[0] if args else "aleksandr"
+voice = args[0] if args else "denis"
+PIPER_VOICES = ("denis", "dmitri", "ruslan", "irina")
+PIPER_DIR = os.environ.get("PIPER_DIR", "/home/claude/piper_voices")
 
 
-def synth(text):
+def synth_piper(text):
+    from piper import PiperVoice, SynthesisConfig
+    global _piper
+    if "_piper" not in globals():
+        _piper = PiperVoice.load(f"{PIPER_DIR}/ru_RU-{voice}-medium.onnx")
+    chunks = list(_piper.synthesize(text, SynthesisConfig(length_scale=0.92)))
+    x = np.concatenate([c.audio_int16_array for c in chunks]).astype(np.float32) / 32768
+    return chunks[0].sample_rate, x
+
+
+def synth_rhvoice(text):
     from rhvoice_wrapper import TTS
     global _tts
     if "_tts" not in globals():
@@ -18,8 +32,11 @@ def synth(text):
         _tts = TTS(threads=1, lib_path=b.lib_path, data_path=dd.data_path, quiet=True)
     data = _tts.get(text, voice=voice, format_="wav", sets=dict(absolute_rate=0.15, absolute_pitch=-0.08))
     with wave.open(io.BytesIO(data)) as w:
-        sr = w.getframerate()
-        x = np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(np.float32) / 32768
+        return w.getframerate(), np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(np.float32) / 32768
+
+
+def synth(text):
+    sr, x = (synth_piper if voice in PIPER_VOICES else synth_rhvoice)(text)
     if sr != SR:
         from scipy import signal
         x = signal.resample_poly(x, SR, sr)

@@ -12,6 +12,24 @@ if [ ! -x $VENV/bin/python ] || ! $VENV/bin/python -c "import rhvoice_wrapper_bi
   tar xzf "$STUDIO/rhvoice_bin.tar.gz" -C "$SP"
   sed -i '201s/.*/    return lib_path/' "$SP/rhvoice_wrapper/rhvoice_bindings.py"
 fi
+# Piper (main voice "denis"): package from PyPI, model from huggingface.co
+PIPER_DIR=${PIPER_DIR:-/home/claude/piper_voices}
+HF=https://huggingface.co/rhasspy/piper-voices/resolve/main/ru/ru_RU/denis/medium
+( set -e
+  $VENV/bin/python -c "import piper" 2>/dev/null || $VENV/bin/pip install -q piper-tts==1.8.0
+  mkdir -p $PIPER_DIR
+  for f in ru_RU-denis-medium.onnx ru_RU-denis-medium.onnx.json; do
+    if [ ! -s $PIPER_DIR/$f ]; then
+      curl -fsSL --retry 3 -o $PIPER_DIR/$f.part "$HF/$f"
+      mv $PIPER_DIR/$f.part $PIPER_DIR/$f
+    fi
+  done
+  $VENV/bin/python -c "
+from piper import PiperVoice
+v = PiperVoice.load('$PIPER_DIR/ru_RU-denis-medium.onnx')
+assert sum(len(c.audio_int16_array) for c in v.synthesize('Проверка голоса.')) > 0
+print('Piper OK: denis')"
+) || echo "PIPER FAILED: голос denis недоступен, используй tts.py aleksandr и напиши об этом в отчёте"
 $VENV/bin/python - <<'PY'
 import rhvoice_wrapper_bin as b, rhvoice_wrapper_data as d
 from rhvoice_wrapper import TTS
