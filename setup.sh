@@ -12,7 +12,31 @@ if [ ! -x $VENV/bin/python ] || ! $VENV/bin/python -c "import rhvoice_wrapper_bi
   tar xzf "$STUDIO/rhvoice_bin.tar.gz" -C "$SP"
   sed -i '201s/.*/    return lib_path/' "$SP/rhvoice_wrapper/rhvoice_bindings.py"
 fi
-# Piper (main voice "denis"): package from PyPI, model from huggingface.co
+# Main voice: Microsoft Edge "dmitry" (ru-RU-DmitryNeural) via edge-tts from PyPI, online
+( set -e
+  $VENV/bin/python -c "import edge_tts" 2>/dev/null || $VENV/bin/pip install -q edge-tts
+  # session proxy re-signs TLS: trust its CA in the venv's certifi bundle (edge-tts uses certifi)
+  if [ -s /root/.ccr/ca-bundle.crt ]; then
+    C=$($VENV/bin/python -c "import certifi;print(certifi.where())")
+    grep -q "$(sed -n 2p /root/.ccr/ca-bundle.crt)" "$C" || cat /root/.ccr/ca-bundle.crt >> "$C"
+  fi
+  $VENV/bin/python - <<'PY'
+import asyncio, os, tempfile, time, edge_tts
+err = "empty audio"
+for i in range(12):
+    p = tempfile.mktemp(suffix=".mp3")
+    try:
+        asyncio.run(edge_tts.Communicate("Проверка голоса.", "ru-RU-DmitryNeural").save(p))
+        if os.path.getsize(p) > 0:
+            print("Edge OK: dmitry"); break
+    except Exception as e:
+        err = e
+    time.sleep(3)
+else:
+    raise SystemExit(f"edge failed: {err}")
+PY
+) || echo "EDGE FAILED: голос dmitry недоступен, используй tts.py denis и напиши об этом в отчёте"
+# Piper (fallback voice "denis"): package from PyPI, model from huggingface.co
 PIPER_DIR=${PIPER_DIR:-/home/claude/piper_voices}
 HF=https://huggingface.co/rhasspy/piper-voices/resolve/main/ru/ru_RU/denis/medium
 ( set -e

@@ -1,6 +1,8 @@
 """Synthesize the voiceover sentence by sentence and build timeline.json + vo.wav.
 Usage: python tts.py [--estimate] [voice]
-voice: denis (default), dmitri, ruslan, irina — Piper (models from huggingface.co, see setup.sh);
+voice: dmitry (default) — Microsoft Edge neural voice ru-RU-DmitryNeural via edge-tts (online);
+       svetlana — ru-RU-SvetlanaNeural (edge-tts);
+       denis, dmitri, ruslan, irina — Piper (models from huggingface.co, see setup.sh), denis = fallback;
        aleksandr, anna, elena — RHVoice (old voice)."""
 import io, json, os, re, sys, wave
 import numpy as np
@@ -9,7 +11,9 @@ from script import SCRIPT, HEADLINES, LEAD_IN, TAIL, SENT_GAP
 SR = 24000
 estimate = "--estimate" in sys.argv
 args = [a for a in sys.argv[1:] if not a.startswith("--")]
-voice = args[0] if args else "denis"
+voice = args[0] if args else "dmitry"
+EDGE_VOICES = {"dmitry": "ru-RU-DmitryNeural", "svetlana": "ru-RU-SvetlanaNeural"}
+EDGE_RATE = os.environ.get("EDGE_RATE", "+0%")
 PIPER_VOICES = ("denis", "dmitri", "ruslan", "irina")
 PIPER_DIR = os.environ.get("PIPER_DIR", "/home/claude/piper_voices")
 
@@ -35,8 +39,31 @@ def synth_rhvoice(text):
         return w.getframerate(), np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(np.float32) / 32768
 
 
+def synth_edge(text):
+    """Microsoft Edge neural voice via edge-tts (needs network to speech.platform.bing.com)."""
+    import asyncio, subprocess, tempfile, time
+    import edge_tts
+    last = None
+    for attempt in range(15):
+        try:
+            with tempfile.NamedTemporaryFile(suffix=".mp3") as f:
+                asyncio.run(edge_tts.Communicate(text, EDGE_VOICES[voice], rate=EDGE_RATE).save(f.name))
+                if os.path.getsize(f.name) == 0:
+                    raise RuntimeError("empty audio")
+                pcm = subprocess.run(["ffmpeg", "-loglevel", "error", "-i", f.name, "-f", "s16le", "-ac", "1",
+                                      "-ar", str(SR), "-"], check=True, capture_output=True).stdout
+            return SR, np.frombuffer(pcm, np.int16).astype(np.float32) / 32768
+        except Exception as ex:  # service sometimes answers "No audio received" — retry
+            last = ex
+            time.sleep(3 + attempt)
+    raise RuntimeError(f"edge-tts failed for voice {voice}: {last}")
+
+
 def synth(text):
-    sr, x = (synth_piper if voice in PIPER_VOICES else synth_rhvoice)(text)
+    if voice in EDGE_VOICES:
+        sr, x = synth_edge(text)
+    else:
+        sr, x = (synth_piper if voice in PIPER_VOICES else synth_rhvoice)(text)
     if sr != SR:
         from scipy import signal
         x = signal.resample_poly(x, SR, sr)
