@@ -9,14 +9,14 @@
 (Asia/Yerevan, +04:00) в YouTube Shorts, Instagram Reels и TikTok через Metricool, без предварительного просмотра.
 
 ## ВАЖНО (указание владельца от 27.10.2026)
-Публиковать ТОЛЬКО в YouTube Shorts. Instagram Reels и TikTok больше НЕ планировать — в пункте 13 делай только YouTube-пост.
+Публиковать ТОЛЬКО в YouTube Shorts через НОВЫЙ аккаунт Metricool, blogId `7663599` (старый `7557386` недоступен). Instagram Reels и TikTok больше НЕ планировать — в пункте 13 делай только YouTube-пост.
 
 ## Ключевые данные
 - Репозиторий: `OsipovAlik/dengi-geroev-studio` (публичный). В корне — вся студия (этот файл, код, `episodes.json`).
   Ветка `main` — рабочая: изменения `episodes.json` и новых `charsN.py` коммить и пушь прямо в `main`.
 - Видео хранятся в репозитории: `videos/NN_<hero>_short.mp4` (создание Release запрещено политикой сессии); публичная ссылка — `https://raw.githubusercontent.com/OsipovAlik/dengi-geroev-studio/main/videos/NN_<hero>_short.mp4`. Делать ровно два ролика в день, не готовить впрок.
   Публичная ссылка: `https://github.com/OsipovAlik/dengi-geroev-studio/releases/download/NN/NN_<hero_latin>_short.mp4`.
-- Metricool brand/blogId: `7557386`, часовой пояс `Asia/Yerevan`. Сети: Instagram `dengi_geroev`, YouTube, TikTok `dengi_geroev`.
+- Metricool brand/blogId: `7663599` (новый аккаунт с 27.10.2026), часовой пояс `Asia/Yerevan`. Сеть: только YouTube.
 - Компьютер и Google Диск больше не нужны.
 
 ## Порядок работы (на каждый ролик)
@@ -60,7 +60,7 @@
     Вытащи 8–10 кадров из MP4 и посмотри итог; проверь звук (`volumedetect`) и длительность (`ffprobe`).
 12. **Релиз:** `gh release create NN /home/claude/out/NN_<hero>_short.mp4 --repo OsipovAlik/dengi-geroev-studio --title "NN <Герой>" --notes "<урок>"`.
     Проверь ссылку: `curl -sIL <url> | grep -iE '^HTTP|content-length'` (должно быть 200 и размер файла).
-13. **Metricool** (с 27.10.2026 — ТОЛЬКО YouTube; пункты про Instagram и TikTok ниже пропускай) (`createScheduledPost`, blogId `7557386`). Время: ролик №1 — сегодня 12:00 `+04:00`,
+13. **Metricool** (с 27.10.2026 — ТОЛЬКО YouTube; пункты про Instagram и TikTok ниже пропускай) (`createScheduledPost`, blogId `7663599`). Время: ролик №1 — сегодня 12:00 `+04:00`,
     ролик №2 — 15:00 `+04:00`; если до времени < 20 мин — ближайшее время ≥ сейчас+20 мин, интервал между роликами ≥ 2 ч.
     - **YouTube** первым: providers `[{"network":"youtube"}]`, media = ссылка релиза, `youtubeData`: title (≤ 70 символов,
       вопрос/интрига + эмодзи), `"type":"short"`, `"privacy":"public"`, 15–20 тегов (первый — «деньги героев»),
