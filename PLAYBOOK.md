@@ -8,6 +8,9 @@
 Владелец одобрил полностью автоматическую работу: по будням (пн–пт) два ролика, публикация в 12:00 и 15:00
 (Asia/Yerevan, +04:00) в YouTube Shorts, Instagram Reels и TikTok через Metricool, без предварительного просмотра.
 
+## ВАЖНО (указание владельца от 27.10.2026)
+Публиковать ТОЛЬКО в YouTube Shorts. Instagram Reels и TikTok больше НЕ планировать — в пункте 13 делай только YouTube-пост.
+
 ## Ключевые данные
 - Репозиторий: `OsipovAlik/dengi-geroev-studio` (публичный). В корне — вся студия (этот файл, код, `episodes.json`).
   Ветка `main` — рабочая: изменения `episodes.json` и новых `charsN.py` коммить и пушь прямо в `main`.
@@ -57,7 +60,7 @@
     Вытащи 8–10 кадров из MP4 и посмотри итог; проверь звук (`volumedetect`) и длительность (`ffprobe`).
 12. **Релиз:** `gh release create NN /home/claude/out/NN_<hero>_short.mp4 --repo OsipovAlik/dengi-geroev-studio --title "NN <Герой>" --notes "<урок>"`.
     Проверь ссылку: `curl -sIL <url> | grep -iE '^HTTP|content-length'` (должно быть 200 и размер файла).
-13. **Metricool** (`createScheduledPost`, blogId `7557386`). Время: ролик №1 — сегодня 12:00 `+04:00`,
+13. **Metricool** (с 27.10.2026 — ТОЛЬКО YouTube; пункты про Instagram и TikTok ниже пропускай) (`createScheduledPost`, blogId `7557386`). Время: ролик №1 — сегодня 12:00 `+04:00`,
     ролик №2 — 15:00 `+04:00`; если до времени < 20 мин — ближайшее время ≥ сейчас+20 мин, интервал между роликами ≥ 2 ч.
     - **YouTube** первым: providers `[{"network":"youtube"}]`, media = ссылка релиза, `youtubeData`: title (≤ 70 символов,
       вопрос/интрига + эмодзи), `"type":"short"`, `"privacy":"public"`, 15–20 тегов (первый — «деньги героев»),
