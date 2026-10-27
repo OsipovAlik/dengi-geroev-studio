@@ -7,7 +7,7 @@ CAP_Y = 930 if LAND else 1450
 YELLOW = (255, 214, 72)
 
 
-def chunk_words(words, max_words=3, max_chars=20):
+def chunk_words(words, max_words=5 if LAND else 3, max_chars=34 if LAND else 20):
     """words: list of dict(w, s, e). returns list of chunks (list of words)"""
     chunks, cur = [], []
     for wd in words:

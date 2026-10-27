@@ -61,7 +61,7 @@ if __name__ == "__main__":
     rng_ = range(n)
     if len(sys.argv) >= 3 and sys.argv[1].isdigit():
         rng_ = range(int(sys.argv[1]), min(n, int(sys.argv[2])))
-    with Pool(2) as pool:
+    with Pool(int(os.environ.get("NPROC", "2"))) as pool:
         for j, _ in enumerate(pool.imap_unordered(frame, rng_, chunksize=4)):
             if j % 120 == 0:
                 print(j, "/", len(rng_), flush=True)
