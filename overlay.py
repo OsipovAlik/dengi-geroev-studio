@@ -2,7 +2,8 @@ import math, re
 from PIL import Image, ImageDraw, ImageFilter
 from engine import *
 
-CAP_Y = 1450
+LAND = W > H
+CAP_Y = 930 if LAND else 1450
 YELLOW = (255, 214, 72)
 
 
@@ -36,7 +37,7 @@ def build_chunks(timeline):
 
 
 def draw_caption(img, chunk, t):
-    f = font(FONT_CAP, 76)
+    f = font(FONT_CAP, 62 if LAND else 76)
     words = [w["w"].upper() for w in chunk["words"]]
     d = ImageDraw.Draw(img)
     space = d.textlength(" ", font=f) * 1.7
@@ -44,7 +45,7 @@ def draw_caption(img, chunk, t):
     total = sum(widths) + space * (len(words) - 1)
     # wrap into two lines if too wide
     lines = [[0, len(words)]]
-    if total > W - 120 and len(words) > 1:
+    if total > (W - 120 if not LAND else 1500) and len(words) > 1:
         best = 1
         bestdiff = 1e9
         for k in range(1, len(words)):
@@ -57,7 +58,7 @@ def draw_caption(img, chunk, t):
     pop = 0.86 + 0.14 * ease_out(age / 0.12)
     layer = Image.new("RGBA", (W, 300), (0, 0, 0, 0))
     ld = ImageDraw.Draw(layer)
-    lh = 92
+    lh = 76 if LAND else 92
     y0 = 150 - lh * (len(lines) - 1) / 2
     for li, (a, b) in enumerate(lines):
         lw = sum(widths[a:b]) + space * (b - a - 1)
@@ -112,7 +113,7 @@ def headline(img, text, age):
         layer = layer.resize((max(1, int(layer.width * s)), max(1, int(layer.height * s))), Image.BICUBIC)
     a = layer.split()[3].point(lambda v: int(v * clamp(k * 1.5)))
     layer.putalpha(a)
-    img.alpha_composite(layer, (int((W - layer.width) / 2), int(250 - layer.height / 2)))
+    img.alpha_composite(layer, (int((W - layer.width) / 2), int((110 if LAND else 250) - layer.height / 2)))
 
 
 try:
@@ -130,6 +131,8 @@ def end_card(img, k, t):
     d.rectangle([60, 60, W - 60, H - 60], outline=(70, 46, 30), width=6)
     d.rectangle([80, 80, W - 80, H - 80], outline=(150, 110, 70), width=2)
     # coin emblem
+    if LAND:
+        return _end_card_land(img, card, d, k, t)
     cx, cy = W // 2, 640
     bounce = math.sin(t * 3) * 8
     d.ellipse([cx - 170, cy - 170 + bounce, cx + 170, cy + 170 + bounce], fill=(214, 170, 70), outline=(54, 34, 20), width=8)
@@ -140,5 +143,18 @@ def end_card(img, k, t):
     d.text((W // 2, 1250), "финансы на примерах персонажей", font=font(FONT_SERIF_I, 46), fill=(90, 60, 40), anchor="mm")
     d.text((W // 2, 1420), "Следующий герой:", font=font(FONT_SERIF_I, 50), fill=(90, 60, 40), anchor="mm")
     d.text((W // 2, 1490), NEXT_HERO, font=font(FONT_SERIF_B, 64 if len(NEXT_HERO) < 14 else 52), fill=(140, 40, 32), anchor="mm")
+    card = finish(card.convert("RGB"), int(t * FPS)).convert("RGBA")
+    return Image.blend(img, card, clamp(k))
+
+
+def _end_card_land(img, card, d, k, t):
+    cx, cy = 560, H // 2
+    bounce = math.sin(t * 3) * 8
+    d.ellipse([cx - 170, cy - 170 + bounce, cx + 170, cy + 170 + bounce], fill=(214, 170, 70), outline=(54, 34, 20), width=8)
+    d.ellipse([cx - 130, cy - 130 + bounce, cx + 130, cy + 130 + bounce], outline=(150, 110, 40), width=5)
+    d.text((cx, cy + bounce + 6), "₽", font=font(FONT_SERIF_B, 200), fill=(90, 58, 24), anchor="mm")
+    d.text((1260, 400), "ДЕНЬГИ ГЕРОЕВ", font=font(FONT_SERIF_B, 110), fill=(54, 30, 20), anchor="mm")
+    d.text((1260, 520), "финансы на примерах персонажей", font=font(FONT_SERIF_I, 46), fill=(90, 60, 40), anchor="mm")
+    d.text((1260, 680), "Подписывайся — новые ролики каждый день", font=font(FONT_SERIF_I, 46), fill=(90, 60, 40), anchor="mm")
     card = finish(card.convert("RGB"), int(t * FPS)).convert("RGBA")
     return Image.blend(img, card, clamp(k))

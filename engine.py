@@ -2,7 +2,8 @@ import math, random
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-W, H = 1080, 1920
+import os as _os
+W, H = (1920, 1080) if _os.environ.get("LAND") else (1080, 1920)  # LAND=1: horizontal 16:9
 FPS = 24
 SS = 2  # supersampling for characters
 INK = (43, 29, 20, 255)
