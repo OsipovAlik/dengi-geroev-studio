@@ -47,7 +47,7 @@ def synth_edge(text):
     for attempt in range(15):
         try:
             with tempfile.NamedTemporaryFile(suffix=".mp3") as f:
-                asyncio.run(edge_tts.Communicate(text, EDGE_VOICES[voice], rate=EDGE_RATE).save(f.name))
+                asyncio.run(edge_tts.Communicate(text, EDGE_VOICES[voice], rate=EDGE_RATE, proxy=os.environ.get("HTTPS_PROXY")).save(f.name))
                 if os.path.getsize(f.name) == 0:
                     raise RuntimeError("empty audio")
                 pcm = subprocess.run(["ffmpeg", "-loglevel", "error", "-i", f.name, "-f", "s16le", "-ac", "1",

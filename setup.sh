@@ -26,7 +26,7 @@ err = "empty audio"
 for i in range(12):
     p = tempfile.mktemp(suffix=".mp3")
     try:
-        asyncio.run(edge_tts.Communicate("Проверка голоса.", "ru-RU-DmitryNeural").save(p))
+        asyncio.run(edge_tts.Communicate("Проверка голоса.", "ru-RU-DmitryNeural", proxy=os.environ.get("HTTPS_PROXY")).save(p))
         if os.path.getsize(p) > 0:
             print("Edge OK: dmitry"); break
     except Exception as e:
