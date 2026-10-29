@@ -137,7 +137,7 @@ def end_card(img, k, t):
     bounce = math.sin(t * 3) * 8
     d.ellipse([cx - 170, cy - 170 + bounce, cx + 170, cy + 170 + bounce], fill=(214, 170, 70), outline=(54, 34, 20), width=8)
     d.ellipse([cx - 130, cy - 130 + bounce, cx + 130, cy + 130 + bounce], outline=(150, 110, 40), width=5)
-    d.text((cx, cy + bounce + 6), "₽", font=font(FONT_SERIF_B, 200), fill=(90, 58, 24), anchor="mm")
+    d.text((cx, cy + bounce + 6), "★", font=font(FONT_SERIF_B, 200), fill=(90, 58, 24), anchor="mm")
     d.text((W // 2, 980), "ДЕНЬГИ", font=font(FONT_SERIF_B, 130), fill=(54, 30, 20), anchor="mm")
     d.text((W // 2, 1110), "ГЕРОЕВ", font=font(FONT_SERIF_B, 130), fill=(54, 30, 20), anchor="mm")
     d.text((W // 2, 1250), "финансы на примерах персонажей", font=font(FONT_SERIF_I, 46), fill=(90, 60, 40), anchor="mm")
@@ -152,7 +152,7 @@ def _end_card_land(img, card, d, k, t):
     bounce = math.sin(t * 3) * 8
     d.ellipse([cx - 170, cy - 170 + bounce, cx + 170, cy + 170 + bounce], fill=(214, 170, 70), outline=(54, 34, 20), width=8)
     d.ellipse([cx - 130, cy - 130 + bounce, cx + 130, cy + 130 + bounce], outline=(150, 110, 40), width=5)
-    d.text((cx, cy + bounce + 6), "₽", font=font(FONT_SERIF_B, 200), fill=(90, 58, 24), anchor="mm")
+    d.text((cx, cy + bounce + 6), "★", font=font(FONT_SERIF_B, 200), fill=(90, 58, 24), anchor="mm")
     d.text((1260, 400), "ДЕНЬГИ ГЕРОЕВ", font=font(FONT_SERIF_B, 110), fill=(54, 30, 20), anchor="mm")
     d.text((1260, 520), "финансы на примерах персонажей", font=font(FONT_SERIF_I, 46), fill=(90, 60, 40), anchor="mm")
     d.text((1260, 680), "Подписывайся — новые ролики каждый день", font=font(FONT_SERIF_I, 46), fill=(90, 60, 40), anchor="mm")
