@@ -108,3 +108,12 @@ def cheese(img, x, y, s=1.0, ang=0):
     d.line(pts + [pts[0]], fill=INK, width=5)
     for (hx, hy, r) in ((-40, 5, 12), (30, 10, 9), (60, -5, 7)):
         d.ellipse([x + (hx - r) * s, y + (hy - r) * s, x + (hx + r) * s, y + (hy + r) * s], fill=(226, 180, 50), outline=INK, width=3)
+
+
+def glasses(img, x, y, s=1.0):
+    d = ImageDraw.Draw(img)
+    for dx in (-60, 60):
+        d.ellipse([x + (dx - 48) * s, y - 48 * s, x + (dx + 48) * s, y + 48 * s], fill=(210, 232, 244), outline=INK, width=6)
+    d.line([(x - 12 * s, y), (x + 12 * s, y)], fill=INK, width=6)
+    d.line([(x - 108 * s, y), (x - 150 * s, y - 20 * s)], fill=INK, width=6)
+    d.line([(x + 108 * s, y), (x + 150 * s, y - 20 * s)], fill=INK, width=6)
