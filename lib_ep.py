@@ -1,6 +1,7 @@
 import math, random
 from base import *
 from chars15 import *
+from chars16 import *
 
 BROWN = (60, 36, 26)
 BROWN2 = (110, 70, 50)
@@ -87,3 +88,23 @@ def burst(img, x, y, txt, k, size=84, col=(220, 60, 40)):
     d.polygon(pts, fill=(250, 220, 90), outline=INK)
     if s > 0.8:
         d.text((x, y), txt, font=font(FONT_SERIF_B, size), fill=col, anchor="mm", stroke_width=3, stroke_fill=INK)
+
+
+@cached
+def bg_forest():
+    d = BD(opaque=True)
+    d.img.paste(vgrad(W * B, H * B, (176, 214, 190), (226, 232, 200)), (0, 0))
+    for x, w_ in ((90, 90), (990, 100), (520, 60)):
+        d.rect(x - w_ / 2, 300, x + w_ / 2, 1560, (110, 82, 58, 255), 6)
+        d.poly([(x - 230, 420), (x, 40), (x + 230, 420)], (84, 140, 96, 255), 6)
+    d.rect(-10, 1560, W + 10, H + 10, (120, 150, 96, 255), 6)
+    return d.done()
+
+
+def cheese(img, x, y, s=1.0, ang=0):
+    d = ImageDraw.Draw(img)
+    pts = [(x - 90 * s, y + 40 * s), (x + 90 * s, y + 40 * s), (x + 90 * s, y - 10 * s), (x - 90 * s, y - 60 * s)]
+    d.polygon(pts, fill=(250, 214, 80), outline=INK)
+    d.line(pts + [pts[0]], fill=INK, width=5)
+    for (hx, hy, r) in ((-40, 5, 12), (30, 10, 9), (60, -5, 7)):
+        d.ellipse([x + (hx - r) * s, y + (hy - r) * s, x + (hx + r) * s, y + (hy + r) * s], fill=(226, 180, 50), outline=INK, width=3)
