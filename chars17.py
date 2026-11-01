@@ -81,3 +81,18 @@ def draw_wolf(ctx, pose):
     # bushy tail
     ctx.poly([(-70, -330), (-190, -290), (-270, -380), (-220, -500), (-150, -450), (-110, -390)], GREY, 6)
     ctx.poly([(-220, -500), (-270, -380), (-240, -350), (-190, -430)], WHITE, 4)
+
+
+MUNCH = _pal((150, 48, 52, 255), (236, 200, 90, 255), (236, 232, 220, 255), (36, 32, 40, 255), eye=(70, 100, 140, 255))
+MUNCH.update(hair=(236, 236, 240, 255), stache=(226, 226, 232, 255))
+
+
+def draw_munch(ctx, pose):
+    _base(MUNCH, C.SKIN, C.SKIN_SH, (200, 200, 206, 255), ctx, pose)
+    x0, y0 = _head_xy(pose)
+    t = pose.get("turn", 0.25)
+    # tricorn hat with feather, curled white moustache, rosy cheeks
+    ctx.poly([(x0 - 100, y0 - 70), (x0, y0 - 150), (x0 + 100, y0 - 70), (x0 + 20, y0 - 96), (x0 - 20, y0 - 96)], (36, 32, 40, 255), 5)
+    ctx.line(bezier((x0 + 60, y0 - 100), (x0 + 130, y0 - 190), (x0 + 150, y0 - 120)), 10, (236, 236, 240, 255))
+    for s in (-1, 1):
+        ctx.line(bezier((x0 + 12 * t + s * 8, y0 + 40), (x0 + 12 * t + s * 60, y0 + 56), (x0 + 12 * t + s * 80, y0 + 20)), 9, (226, 226, 232, 255))

@@ -36,7 +36,6 @@ def house(img, kind, x, y, s=1.0, broken=0.0):
 def scene1(t, dur):
     img = bg_forest().copy().convert("RGBA")
     p = t / dur
-    card(img, 330, "ДЁШЕВО СЕЙЧАС — ДОРОГО ПОТОМ?", seg(p, 0.05, 0.2), fill=(250, 220, 90), size=42, h=150)
     house(img, "straw", 800, 1530, 0.9)
     pose = dict(armR=(80, 150), handR="point", armL=(20, 30), smile=0.6, mouth="grin", brow=0.8, look=(0.5, -0.2), turn=0.3,
                 bob=-abs(math.sin(t * 4)) * 6)
