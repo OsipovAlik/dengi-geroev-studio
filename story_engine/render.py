@@ -5,7 +5,7 @@ from shots import *
 _ov={}
 def overlay():
     if 'v' not in _ov:
-        s,c=surf(W,H);c.set_source(rg(W/2,H*.46,H*.28,H*.74,[(0,(0,0,0,0)),(.6,(.03,0,.1,.12)),(1,(.03,0,.14,.62))]));c.paint()
+        s,c=surf(W,H);c.set_source(rg(W/2,H*.46,max(W,H)*.28,max(W,H)*.74,[(0,(0,0,0,0)),(.6,(.03,0,.1,.12)),(1,(.03,0,.14,.62))]));c.paint()
         _ov['v']=s
         s2,c2=surf(W,H);c2.set_source(lg(c2,0,0,W,H,[(0,(1,.72,.3,.28)),(.5,(.5,.5,.5,0)),(1,(.1,.2,.9,.28))]));c2.paint();_ov['g']=s2
         x=np.arange(256)/255.;l=x+.14*np.sin(2*np.pi*x-np.pi)*-.5*-1;l=np.clip(x+(.5*(1-np.cos(np.pi*x))-x)*.42,0,1)

@@ -1,7 +1,7 @@
 import cairo,math,os,random,numpy as np
 FONT=os.environ.get('STORY_FONT','Inter')
 from scipy.ndimage import gaussian_filter
-W,H=1080,1920;FPS=30;SW,SH=1400,2400
+W,H=(1920,1080) if os.environ.get('LANDSCAPE') else (1080,1920);FPS=30;SW,SH=1400,2400  # LANDSCAPE=1 — горизонтальный 16:9 (длинные ролики)
 def rgb(h,a=1.0):
     if isinstance(h,tuple):return h if len(h)==4 else (*h,a)
     h=h.lstrip('#');return (int(h[:2],16)/255,int(h[2:4],16)/255,int(h[4:6],16)/255,a)
