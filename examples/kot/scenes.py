@@ -61,7 +61,7 @@ def scene4(t, dur):
     card(img, 380, "Цель: 60", seg(p, 0.0, 0.12), size=60)
     card(img, 560, "Срок: 6 месяцев", seg(p, 0.25, 0.4), size=58)
     card(img, 760, "60 ÷ 6 = 10 в месяц", seg(p, 0.5, 0.7), fill=(200, 60, 48), col=(255, 250, 240), size=62, h=140)
-    cat(img, 540, 2250, 0.62, turn=0.3, look=(0.5, -0.9), mouth="grin", brow=0.8, armR=(80, 150), handR="point", armL=(10, 20))
+    cat(img, 540, 1640, 0.48, turn=0.3, look=(0.5, -0.9), mouth="grin", brow=0.8, armR=(80, 150), handR="point", armL=(10, 20))
     return img, dict(zoom=1.0, cx=0.5, cy=0.5)
 
 
@@ -70,7 +70,7 @@ def scene5(t, dur):
     p = t / dur
     card(img, 420, "«Когда-нибудь» ✗", seg(p, 0.0, 0.15), fill=(236, 200, 190), size=56)
     card(img, 620, "Сумма + дата ✓", seg(p, 0.35, 0.55), fill=(250, 220, 90), size=58, h=130)
-    cat(img, 540, 2250, 0.62, turn=-0.3, look=(-0.4, -0.9), smile=0.9, mouth="grin", armL=(10, 20), armR=(10, 20))
+    cat(img, 540, 1640, 0.48, turn=-0.3, look=(-0.4, -0.9), smile=0.9, mouth="grin", armL=(10, 20), armR=(10, 20))
     return img, dict(zoom=1.0, cx=0.5, cy=0.5)
 
 
@@ -80,7 +80,7 @@ def scene6(t, dur):
     card(img, 420, "1. Цель", seg(p, 0.0, 0.15), size=56)
     card(img, 600, "2. Срок", seg(p, 0.3, 0.5), size=56)
     card(img, 780, "3. Сумма — в день получки", seg(p, 0.65, 0.8), fill=(250, 220, 90), size=50, h=120)
-    cat(img, 540, 2250, 0.62, armL=(140, 30), armR=(140, 30), smile=0.9, mouth="grin", brow=0.6, look=(0, -0.4), turn=0.1)
+    cat(img, 540, 1640, 0.48, armL=(140, 30), armR=(140, 30), smile=0.9, mouth="grin", brow=0.6, look=(0, -0.4), turn=0.1)
     return img, dict(zoom=1.0, cx=0.5, cy=0.5)
 
 
