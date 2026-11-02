@@ -283,7 +283,7 @@ def build(timeline, vo_path, out_path):
     duck = 1 - 0.55 * envv
     music = music / (np.abs(music).max() + 1e-6) * 0.42 * duck
     sfx = sfx / (np.abs(sfx).max() + 1e-6) * 0.38 * (1 - 0.35 * envv)
-    mix = vo + music + sfx
+    mix = vo + sfx  # фоновая музыка отключена по указанию владельца 02.11.2026
     # fade end
     fe = int(0.6 * SR)
     mix[int(total * SR) - fe:int(total * SR)] *= np.linspace(1, 0, fe)

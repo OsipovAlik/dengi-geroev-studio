@@ -55,7 +55,7 @@ n=int((resume-stop)*sr);tt=np.arange(n)/sr;x=np.sin(2*np.pi*55*tt)*.5+np.sin(2*n
 v,vs=sf.read('vo.wav');assert vs==24000
 vi=np.interp(np.arange(int(len(v)*sr/24000))/sr,np.arange(len(v))/24000,v)
 vo=np.zeros(N);put(vo,vi,0,1.0)
-e2=np.abs(vo);k=int(.06*sr);ev=np.convolve(e2,np.ones(k)/k,'same');duck=1-.5*np.clip(ev*12,0,1);mix=vo*1.0+mus*duck*.5+sfx*.72
+e2=np.abs(vo);k=int(.06*sr);ev=np.convolve(e2,np.ones(k)/k,'same');duck=1-.5*np.clip(ev*12,0,1);mix=vo*1.0+sfx*.72  # фоновая музыка отключена по указанию владельца 02.11.2026 (mus не подмешивается)
 mix=np.tanh(mix*1.05)/1.05
 sf.write('mix_raw.wav',np.stack([mix,mix],1),sr)
 print(e)
