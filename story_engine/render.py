@@ -1,6 +1,7 @@
 import sys,os,subprocess,multiprocessing as mp
 sys.path.insert(0,os.getcwd())
 from lib import *
+VIGNETTE=1.;GRAIN=5;CURVE=.42;POST=None  # ролик может переопределить; в стиле «один полёт» POST задаёт свет и смаз
 from shots import *
 _ov={}
 def overlay():
@@ -8,7 +9,7 @@ def overlay():
         s,c=surf(W,H);c.set_source(rg(W/2,H*.46,max(W,H)*.28,max(W,H)*.74,[(0,(0,0,0,0)),(.6,(.03,0,.1,.12)),(1,(.03,0,.14,.62))]));c.paint()
         _ov['v']=s
         s2,c2=surf(W,H);c2.set_source(lg(c2,0,0,W,H,[(0,(1,.72,.3,.28)),(.5,(.5,.5,.5,0)),(1,(.1,.2,.9,.28))]));c2.paint();_ov['g']=s2
-        x=np.arange(256)/255.;l=x+.14*np.sin(2*np.pi*x-np.pi)*-.5*-1;l=np.clip(x+(.5*(1-np.cos(np.pi*x))-x)*.42,0,1)
+        x=np.arange(256)/255.;l=x+.14*np.sin(2*np.pi*x-np.pi)*-.5*-1;l=np.clip(x+(.5*(1-np.cos(np.pi*x))-x)*CURVE,0,1)
         _ov['lut']=(l*255).astype(np.uint8)
     return _ov
 def caption(c,t):
@@ -29,9 +30,10 @@ def frame(f):
     if name=='kick' and False:pass
     o=overlay()
     c.set_operator(cairo.OPERATOR_SOFT_LIGHT);c.set_source_surface(o['g'],0,0);c.paint();c.set_operator(cairo.OPERATOR_OVER)
-    c.set_source_surface(o['v'],0,0);c.paint()
+    c.set_source_surface(o['v'],0,0);c.paint_with_alpha(VIGNETTE)
     s.flush();arr=np.ndarray((H,W,4),np.uint8,s.get_data()).copy()
     arr[...,:3]=o['lut'][arr[...,:3]]
+    if POST:arr[...,:3]=POST(arr[...,:3],t)
     # whip blur at cut in: first 4 frames of whip shots
     if wh and t-a<4/FPS:
         amt=int(150*(1-(t-a)*FPS/4));acc=np.zeros((H,W,3),np.float32)
@@ -41,8 +43,9 @@ def frame(f):
     # captions on top
     s2=cairo.ImageSurface.create_for_data(arr,cairo.FORMAT_ARGB32,W,H);c2=cairo.Context(s2);caption(c2,t);s2.flush()
     # subtle grain
-    rng=np.random.default_rng(f);g=rng.integers(-5,6,(H//2,W//2),dtype=np.int16).repeat(2,0).repeat(2,1)
-    a3=arr[...,:3].astype(np.int16)+g[...,None];arr[...,:3]=a3.clip(0,255).astype(np.uint8)
+    if GRAIN:
+        rng=np.random.default_rng(f);g=rng.integers(-GRAIN,GRAIN+1,(H//2,W//2),dtype=np.int16).repeat(2,0).repeat(2,1)
+        a3=arr[...,:3].astype(np.int16)+g[...,None];arr[...,:3]=a3.clip(0,255).astype(np.uint8)
     return arr
 def rscene(i):
     name,a,b,fn,wh=SH_LIST[i]

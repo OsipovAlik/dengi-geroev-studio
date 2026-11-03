@@ -1,0 +1,20 @@
+{
+ "phrases": [
+  "At 4 a.m. in 1876, robbers ignored the bank and walked into the cashier's bedroom.",
+  "They stopped his clocks, cuffed him to a chair, and forced out the vault combination.",
+  "By morning, 1.6 million dollars was gone.",
+  "So banks fought back with a clock.",
+  "A time lock. Once it's set, even the manager can't open the door until morning.",
+  "So the robbers stopped asking, and brought a liquid they called soup.",
+  "Nitroglycerin. One blast could rip off a safe door, and take the building's front with it.",
+  "So banks built a giant steel cannonball, with a door screwed in so tight that liquid couldn't get through.",
+  "Then came vaults so strong that in Hiroshima, two survived the atomic bomb with everything inside intact.",
+  "You see, by then, the door had won.",
+  "So the robbers forgot the door.",
+  "Hackers crawled inside the banks' computers, and ATMs started spitting out cash at a set time.",
+  "Up to a billion dollars.",
+  "And not one vault door ever opened."
+ ],
+ "long_gap_after": [2,4,6,7,8,9,12],
+ "speed": 1.2
+}
