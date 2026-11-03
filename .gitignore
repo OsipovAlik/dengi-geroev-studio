@@ -1,1 +1,8 @@
 __pycache__/
+story_engine/episodes/*/build.log
+story_engine/episodes/*/list.txt
+story_engine/episodes/*/*.wav
+story_engine/episodes/*/silent.mp4
+story_engine/episodes/*/timing.json
+story_engine/episodes/*/scenes/
+story_engine/episodes/*/prev.png
