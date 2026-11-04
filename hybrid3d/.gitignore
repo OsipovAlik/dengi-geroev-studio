@@ -1,0 +1,5 @@
+node_modules/
+package*.json
+stories/*/out/
+stories/*/vo.wav
+stories/*/.tts/
