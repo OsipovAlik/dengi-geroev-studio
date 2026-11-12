@@ -21,6 +21,6 @@ function makeTable(name,title,clauses,wood0='#c58a4e'){const g=new THREE.Group()
  addSet(name,g);return{g,paper,hl,top,sun}}
 // башня из «пачек»: n коробок, высота шага .3
 function tower(col,x,z){const g=new THREE.Group();const bs=[];for(let i=0;i<10;i++){const b=box(1.1,.28,.7,col,0,.16+i*.3,0);b.visible=false;g.add(b);bs.push(b)}g.position.set(x,0,z);return{g,set(n){bs.forEach((b,i)=>b.visible=i<n)}}}
-function billboard(g,txt,sub,x,y,z,w=14,h=8,bg='#ffd23f'){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:label(1024,Math.round(1024*h/w),bg,[{t:txt,s:sub?190:230,y:sub?.4:.5},...(sub?[{t:sub,s:100,y:.76}]:[])],{border:INK,bw:20}),side:THREE.DoubleSide}));m.position.set(x,y,z);g.add(m);const l=box(.5,y,.5,'#444',x-w*.3,y/2,z-.1),r=box(.5,y,.5,'#444',x+w*.3,y/2,z-.1);g.add(l,r);return m}
+function billboard(g,txt,sub,x,y,z,w=14,h=8,bg='#ffd23f'){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:label(1024,Math.round(1024*h/w),bg,[{t:txt,s:sub?190:230,y:sub?.4:.5},...(sub?[{t:sub,s:100,y:.76}]:[])],{border:INK,bw:20}),side:THREE.DoubleSide}));m.position.set(x,y,z);g.add(m);const l=box(.5,y,.5,"#444",x-w*.3,y/2,z-.7),r=box(.5,y,.5,"#444",x+w*.3,y/2,z-.7);g.add(l,r);return m}
 function room(name,base,to='#ffffff'){const r=makeCell(name);r.base=new THREE.Color(base);r.col=(u,b2)=>r.color(u,r.base,new THREE.Color(b2));return r}
 return{hook,big,stand,makeTable,tower,billboard,room,outlined,THREE}}
