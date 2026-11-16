@@ -88,7 +88,7 @@ const shots=[
 {id:'bite2',t0:b2-.15,t1:cr0,in:'whipL',out:'whipUp',f(t,u){forest(t,['angry','sad'],[0,1.7],'sly');camPath(u,[-2.4,1.3,3.2],[-1.2,1.5,2.6],[0,1.0,0],[0,1.1,0],[60,54],.03);
  fx.draw=K.big('КУСЬ!',b2,cr0-.05,'#ffd23f',220,.14)}},
 {id:'crumbs',t0:cr0,t1:S('s05'),in:'whipUp',out:'whipR',f(t,u){forest(t,['sad','sad'],[0,1.7],t>T('не остались крошки.')?'fat':'sly');const a=lerp(.3,-.9,u);cam.position.set(Math.sin(a)*.3,lerp(5.5,3.8,ease(u)),.6+Math.cos(a)*.3);cam.up.set(Math.sin(a),0,-Math.cos(a));cam.lookAt(0,0,.6);cam.up.set(0,1,0);cam.fov=62;cam.updateProjectionMatrix();
- FLAT=true;Object.values(F).forEach(v=>Object.values(v).forEach(m=>{m.rotation.set(-PI/2,0,0);m.position.y=.06}));Object.values(F.fx).forEach(m=>m.position.set(-.9,.06,1.25));
+ FLAT=true;Object.values(F).forEach(v=>Object.values(v).forEach(m=>{m.rotation.set(-PI/2,0,0);m.position.y=.06}));Object.values(F.fx).forEach(m=>m.position.set(-.9,.06,1.25));Object.values(F.c1).forEach(m=>m.position.set(-1.5,.06,-.4));Object.values(F.c2).forEach(m=>m.position.set(1.3,.06,-.6));
  fx.draw=K.big('КРОШКИ',T('не остались крошки.'),S('s05')-.05,'#ffffff',200,.14)}},
 {id:'send',t0:S('s05'),t1:ob,in:'whipR',out:'whipL',f(t,u){mroom(t,100,null);camPath(u,[-.4,.9,3.6],[-.4,1.4,3.0],[-.6,1.7,-2.4],[-.6,1.8,-2.4],[72,66],.03);
  fx.tags=[{txt:'С ПЕРЕВОДАМИ ТАК ЖЕ',t:S('s05')+.05,xy:[.5,.17]}]}},
